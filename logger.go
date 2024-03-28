@@ -14,7 +14,8 @@ import (
 )
 
 var (
-	gray = lipgloss.NewStyle().Foreground(lipgloss.Color("7"))
+	gray   = lipgloss.Color("240")
+	divide = lipgloss.NewStyle().Foreground(gray).Faint(true).SetString("∣")
 )
 
 type Level int
@@ -34,73 +35,84 @@ const (
 )
 
 type LevelStyle struct {
-	PrefixStyle  lipgloss.Style
-	MessageStyle lipgloss.Style
-	Icon         string
-	Text         string
+	Color   lipgloss.Color
+	Icon    lipgloss.Style
+	Text    lipgloss.Style
+	Message lipgloss.Style
+	Key     lipgloss.Style
 }
 
 var (
 	Styles = [...]LevelStyle{
 		LevelTrace: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("14")).Bold(true),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "•",
-			Text:         "TRACE",
+			Color:   lipgloss.Color("63"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("TRACE"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelDebug: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("7")).Bold(true),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "•",
-			Text:         "DEBUG",
+			Color:   lipgloss.Color("145"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("DEBUG"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelNotice: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("4")).Bold(true),
-			MessageStyle: lipgloss.NewStyle().Bold(true),
-			Icon:         "•",
-			Text:         "NOTICE",
+			Color:   lipgloss.Color("192"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("NOTICE"),
+			Key:     lipgloss.NewStyle().Bold(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelInfo: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("6")).Bold(true),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "•",
-			Text:         "INFO",
+			Color:   lipgloss.Color("86"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("INFO"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelWarn: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("3")).Bold(true),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "⚠",
-			Text:         "WARN",
+			Color:   lipgloss.Color("3"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("⚠"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("WARN"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelOk: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("12")).Bold(true),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "✔",
-			Text:         "OK",
+			Color:   lipgloss.Color("33"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("✔"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("OK"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelSuccess: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Bold(true),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "✔",
-			Text:         "SUCCESS",
+			Color:   lipgloss.Color("34"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("✔"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("SUCCESS"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelError: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("9")).Bold(true),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "✖",
-			Text:         "ERROR",
+			Color:   lipgloss.Color("204"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("✖"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("ERROR"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelFatal: {
-			PrefixStyle:  lipgloss.NewStyle().Foreground(lipgloss.Color("1")).Bold(true),
-			MessageStyle: lipgloss.NewStyle().Bold(true),
-			Icon:         "✖",
-			Text:         "FATAL",
+			Color:   lipgloss.Color("134"),
+			Icon:    lipgloss.NewStyle().Bold(true).SetString("✖"),
+			Text:    lipgloss.NewStyle().Bold(true).SetString("FATAL"),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 		LevelPrint: {
-			PrefixStyle:  lipgloss.NewStyle(),
-			MessageStyle: lipgloss.NewStyle(),
-			Icon:         "",
-			Text:         "",
+			Color:   lipgloss.Color(""),
+			Icon:    lipgloss.NewStyle(),
+			Text:    lipgloss.NewStyle(),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
+			Message: lipgloss.NewStyle(),
 		},
 	}
 )
@@ -210,7 +222,10 @@ func (l *Logger) renderTimestamp(level Level) string {
 	if !l.ShowTime || level == LevelPrint {
 		return ""
 	}
-	return gray.Copy().Render(time.Now().Format(l.TimeFormat)) + gray.Copy().Render(" ∣ ")
+	return fmt.Sprintf("%s %s ",
+		lipgloss.NewStyle().Foreground(gray).Render(time.Now().Format(l.TimeFormat)),
+		divide.Render(),
+	)
 }
 
 func (l *Logger) renderLevelText(level Level) string {
@@ -218,7 +233,10 @@ func (l *Logger) renderLevelText(level Level) string {
 		return ""
 	}
 	style := Styles[level]
-	return style.PrefixStyle.Copy().Render(fmt.Sprintf("%-8s", style.Text)) + gray.Copy().Render("∣ ")
+	return fmt.Sprintf("%s%s ",
+		style.Text.Foreground(style.Color).Width(8).Render(),
+		divide.Render(),
+	)
 }
 
 func (l *Logger) print(level Level, msg string, args []Argument) {
@@ -226,38 +244,31 @@ func (l *Logger) print(level Level, msg string, args []Argument) {
 		return
 	}
 
-	style := Styles[level]
-
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
-	prefix := style.Icon
-	if prefix != "" {
-		prefix += " "
-	}
-
+	style := Styles[level]
 	timestamp := l.renderTimestamp(level)
 
 	_, _ = fmt.Fprint(l.Writer,
-		style.PrefixStyle.Render(prefix),
+		style.Icon.Foreground(style.Color).Render(""),
 		l.renderLevelText(level),
 		timestamp,
-		style.MessageStyle.Render(msg),
+		style.Message.Render(msg),
 	)
 
 	if l.ShowCaller {
 		path, line := l.getCallerInfo()
 		args = append(args, Argument{
 			Key:   "caller",
-			Value: gray.Copy().Render(fmt.Sprintf("%s:%d", path, line)),
+			Value: lipgloss.NewStyle().Foreground(gray).Render(fmt.Sprintf("%s:%d", path, line)),
 		})
 	}
-	argPrefixStyle := gray.Copy()
 	for i, argument := range args {
-		keyStyle := lipgloss.NewStyle().Foreground(style.PrefixStyle.GetForeground()).Bold(true)
+		keyStyle := style.Key.Copy().Foreground(style.Color)
 		key, value := argument.Key, ""
 		if key == "caller" {
-			keyStyle.Foreground(gray.GetForeground())
+			keyStyle.Foreground(gray)
 		}
 		if argument.Value != nil {
 			value = fmt.Sprint(argument.Value)
@@ -270,9 +281,8 @@ func (l *Logger) print(level Level, msg string, args []Argument) {
 			argPrefix = "└─"
 		}
 		_, _ = fmt.Fprintf(l.Writer,
-			"\n%s%s %s%s",
-			strings.Repeat(" ", len(prefix)/2),
-			argPrefixStyle.Render(argPrefix),
+			"\n  %s %s%s",
+			lipgloss.NewStyle().Foreground(gray).Render(argPrefix),
 			keyStyle.Render(key),
 			value,
 		)

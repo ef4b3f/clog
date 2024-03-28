@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-	//clog.SetLogLevel(clog.LevelTrace).WithTimestamp(true).WithCaller(true).WithLevelText(true)
+	clog.SetLogLevel(clog.LevelTrace).WithTimestamp(true).WithCaller(true).WithLevelText(true)
 	//clog.SetLogLevel(clog.LevelTrace).WithTimestamp(true).WithCaller(true).WithLevelText(true)
 	//clog.SetLogLevel(clog.LevelTrace).WithTimestamp(true).WithCaller(true)
 	//clog.SetLogLevel(clog.LevelTrace).WithTimestamp(true)
-	clog.SetLogLevel(clog.LevelTrace)
+	//clog.SetLogLevel(clog.LevelTrace)
 	clog.Trace("hello world!", "trace", 1)
 	clog.Debug("hello world!", "debug", "str")
 	clog.Notice("hello world!", "notice", true)
