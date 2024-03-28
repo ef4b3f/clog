@@ -1,8 +1,9 @@
 package main
 
 import (
-	"clog"
 	"fmt"
+
+	"github.com/ef4b3f/clog"
 )
 
 func main() {

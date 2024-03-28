@@ -1,4 +1,4 @@
-module clog
+module github.com/ef4b3f/clog
 
 go 1.22.0
 
