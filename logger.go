@@ -45,63 +45,63 @@ type LevelStyle struct {
 var (
 	Styles = [...]LevelStyle{
 		LevelTrace: {
-			Color:   lipgloss.Color("63"),
+			Color:   lipgloss.Color("51"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("TRACE"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelDebug: {
-			Color:   lipgloss.Color("145"),
+			Color:   lipgloss.Color("102"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("DEBUG"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelNotice: {
-			Color:   lipgloss.Color("192"),
+			Color:   lipgloss.Color("99"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("NOTICE"),
-			Key:     lipgloss.NewStyle().Bold(true),
+			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelInfo: {
-			Color:   lipgloss.Color("86"),
+			Color:   lipgloss.Color("47"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("•"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("INFO"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelWarn: {
-			Color:   lipgloss.Color("3"),
+			Color:   lipgloss.Color("214"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("⚠"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("WARN"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelOk: {
-			Color:   lipgloss.Color("33"),
+			Color:   lipgloss.Color("27"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("✔"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("OK"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelSuccess: {
-			Color:   lipgloss.Color("34"),
+			Color:   lipgloss.Color("28"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("✔"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("SUCCESS"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelError: {
-			Color:   lipgloss.Color("204"),
+			Color:   lipgloss.Color("196"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("✖"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("ERROR"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
 			Message: lipgloss.NewStyle(),
 		},
 		LevelFatal: {
-			Color:   lipgloss.Color("134"),
+			Color:   lipgloss.Color("160"),
 			Icon:    lipgloss.NewStyle().Bold(true).SetString("✖"),
 			Text:    lipgloss.NewStyle().Bold(true).SetString("FATAL"),
 			Key:     lipgloss.NewStyle().Bold(true).Faint(true),
@@ -251,9 +251,9 @@ func (l *Logger) print(level Level, msg string, args []Argument) {
 	timestamp := l.renderTimestamp(level)
 
 	_, _ = fmt.Fprint(l.Writer,
+		timestamp,
 		style.Icon.Foreground(style.Color).Render(""),
 		l.renderLevelText(level),
-		timestamp,
 		style.Message.Render(msg),
 	)
 
@@ -282,7 +282,7 @@ func (l *Logger) print(level Level, msg string, args []Argument) {
 		}
 		_, _ = fmt.Fprintf(l.Writer,
 			"\n  %s %s%s",
-			lipgloss.NewStyle().Foreground(gray).Render(argPrefix),
+			lipgloss.NewStyle().Foreground(gray).Faint(true).Render(argPrefix),
 			keyStyle.Render(key),
 			value,
 		)
