@@ -12,14 +12,31 @@ func main() {
 	clog.WithCaller(true)
 	clog.WithLevelText(true)
 
-	clog.Trace("hello world!", "trace", 1)
-	clog.Debug("hello world!", "debug", "str")
-	clog.Notice("hello world!", "notice", true)
-	clog.Info("hello world!", "info", []string{"a", "b", "c"})
-	clog.Warn("hello world!", "warn", map[string]string{"a": "1", "b": "2"})
-	clog.Ok("hello world!", "result", "완료")
-	clog.Success("hello world!", "success")
-	clog.Error("hello world!", "err", fmt.Errorf("err message"))
-	clog.Print("hello world!", "a", "1", "b")
-	clog.Fatal("hello world!")
+	clog.Trace().Msg("hello world!")
+	clog.Debug().Msg("hello world!")
+	clog.Info().Msg("hello world!")
+	clog.Notice().Msg("hello world!")
+	clog.Warn().Msg("hello world!")
+	clog.Ok().Msg("hello world!")
+	clog.Success().Msg("hello world!")
+	clog.Error().Msg("hello world!")
+
+	fmt.Println("-------------------------")
+
+	clog.Trace().Any("key", "").Msg("hello world!")
+	clog.Debug().Any("key", "str").Msg("hello world!")
+	clog.Info().Any("key", true).Msg("hello world!")
+	clog.Notice().Any("key", 1).Msg("hello world!")
+	clog.Warn().Any("key", nil).Msg("hello world!")
+	clog.Ok().Any("key", 0.1).Msg("hello world!")
+	clog.Success().Any("key", map[string]string{"foo": "foo", "bar": "bar"}).Msg("hello world!")
+	clog.Error().
+		Any("key", []string{"foo", "bar"}).
+		Any("err", "error message by fields").
+		Err(fmt.Errorf("error message by error")).
+		Msg("hello world!")
+
+	fmt.Println("-------------------------")
+
+	clog.Fatal().Msg("hello world!")
 }

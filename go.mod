@@ -2,7 +2,10 @@ module github.com/ef4b3f/clog
 
 go 1.22.0
 
-require github.com/charmbracelet/lipgloss v0.10.0
+require (
+	github.com/charmbracelet/lipgloss v0.10.0
+	github.com/elliotchance/orderedmap/v2 v2.2.0
+)
 
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
