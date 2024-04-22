@@ -24,8 +24,8 @@ const (
 	_ Level = iota - 1
 	LevelTrace
 	LevelDebug
-	LevelNotice
 	LevelInfo
+	LevelNotice
 	LevelWarn
 	LevelOk
 	LevelSuccess
