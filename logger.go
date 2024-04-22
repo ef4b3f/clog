@@ -212,13 +212,11 @@ func (l *Logger) getCallerInfo() (path string, line int) {
 		return
 	}
 
-	_, path, line, _ = runtime.Caller(4)
+	_, path, line, _ = runtime.Caller(3)
 	_, callerBase, _, _ := runtime.Caller(0)
 	basepath := filepath.Dir(callerBase)
 	basepath = strings.ReplaceAll(basepath, "\\", "/")
-
 	path = strings.TrimPrefix(path, basepath)
-
 	return
 }
 
