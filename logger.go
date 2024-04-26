@@ -261,7 +261,7 @@ func (l *Logger) print(level Level, msg string, e *Entry) {
 		timestamp,
 		style.Icon.Foreground(style.Color).Render(""),
 		l.renderLevelText(level),
-		style.Message.Render(msg),
+		style.Message.Foreground(style.Color).Render(msg),
 	)
 
 	if e.Error != nil {
