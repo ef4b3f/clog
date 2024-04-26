@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/muesli/termenv"
 )
 
 var (
@@ -143,6 +144,7 @@ type Logger struct {
 var logger = New()
 
 func New() *Logger {
+	lipgloss.SetColorProfile(termenv.TrueColor)
 	return &Logger{
 		Writer:        os.Stderr,
 		Level:         LevelInfo,
