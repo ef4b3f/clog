@@ -14,6 +14,10 @@ import (
 	"github.com/muesli/termenv"
 )
 
+func init() {
+	lipgloss.SetColorProfile(termenv.TrueColor)
+}
+
 var (
 	gray   = lipgloss.Color("240")
 	divide = lipgloss.NewStyle().Foreground(gray).Faint(true).SetString("∣")
@@ -144,7 +148,6 @@ type Logger struct {
 var logger = New()
 
 func New() *Logger {
-	lipgloss.SetColorProfile(termenv.TrueColor)
 	return &Logger{
 		Writer:        os.Stderr,
 		Level:         LevelInfo,
